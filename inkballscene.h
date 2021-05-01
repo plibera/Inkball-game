@@ -7,13 +7,16 @@
 #include "obstacle.h"
 #include "constants.h"
 
+class Ball;
+
 class InkBallScene : public QGraphicsScene
 {
-    QList <Ball*> balls;
-    QList <Obstacle*> obstacles;
     QPointF sourcePosition;
 
 public:
+    QList <Ball*> balls;
+    QList <Obstacle*> obstacles;
+
     InkBallScene();
 
     void addBall(QColor color, qreal direction, QPointF position = QPointF(-1, -1));

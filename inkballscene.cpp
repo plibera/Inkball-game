@@ -18,12 +18,12 @@ InkBallScene::InkBallScene()
 
 void InkBallScene::addBall(QColor color, qreal direction, QPointF position)
 {
-    Ball *ball = new Ball(color, direction);
+    Ball *ball = new Ball(this, color, direction);
     if(position.x() >= 0 && position.x() < SCENE_W && position.y() >= 0 && position.y() < SCENE_H)
         ball->setPos(position);
     else
         ball->setPos(sourcePosition);
-    addItem(ball);
+    //addItem(ball);
     balls.append(ball);
 }
 

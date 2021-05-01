@@ -6,9 +6,13 @@
 #include <QStyleOption>
 #include <QtMath>
 
-Ball::Ball(QColor color, qreal direction)
-    : angle(direction), color(color)
-{}
+#include <iostream>
+
+Ball::Ball(InkBallScene* inkBallScene, QColor color, qreal direction)
+    : inkBallScene(inkBallScene), angle(direction), color(color)
+{
+    inkBallScene->addItem(this);
+}
 
 
 QRectF Ball::boundingRect() const
@@ -34,5 +38,7 @@ void Ball::advance(int step)
 {
     if (!step)
         return;
+
     setPos(x()+1, y());
+
 }

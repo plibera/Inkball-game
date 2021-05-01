@@ -4,11 +4,15 @@
 #include <QGraphicsItem>
 
 #include "constants.h"
+#include "inkballscene.h"
+
+class InkBallScene;
 
 class Ball : public QGraphicsItem
 {
+    InkBallScene* inkBallScene;
 public:
-    Ball(QColor color, qreal direction);
+    Ball(InkBallScene* scene, QColor color, qreal direction);
 
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
