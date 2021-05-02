@@ -4,7 +4,7 @@ InkBallScene::InkBallScene()
 {
     sourcePosition = QPointF(SCENE_W/2, SCENE_H/2);
 
-    addBall(QColor(255, 0, 0), 45);
+    addBall(QColor(255, 0, 0), M_PI/2, 8);
 
     for(int i = 0; i < GRID_W; ++i)
         addObstacle(QPointF(OBS_W/2 + i*OBS_W, OBS_H/2));
@@ -16,14 +16,13 @@ InkBallScene::InkBallScene()
         addObstacle(QPointF(SCENE_W - OBS_W/2, OBS_H/2 + i*OBS_H));
 }
 
-void InkBallScene::addBall(QColor color, qreal direction, QPointF position)
+void InkBallScene::addBall(QColor color, qreal direction, qreal speed, QPointF position)
 {
-    Ball *ball = new Ball(this, color, direction);
+    Ball *ball = new Ball(this, color, direction, speed);
     if(position.x() >= 0 && position.x() < SCENE_W && position.y() >= 0 && position.y() < SCENE_H)
         ball->setPos(position);
     else
         ball->setPos(sourcePosition);
-    //addItem(ball);
     balls.append(ball);
 }
 

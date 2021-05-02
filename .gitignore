@@ -1,3 +1,8 @@
 buildDebug
 buildRelease
 inkball.pro.user
+test/balltest.o
+test/Makefile
+test/moc_predefs.h
+test/test.pro.user
+test/.qmake.stash

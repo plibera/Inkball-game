@@ -19,7 +19,7 @@ public:
 
     InkBallScene();
 
-    void addBall(QColor color, qreal direction, QPointF position = QPointF(-1, -1));
+    void addBall(QColor color, qreal direction = 0, qreal speed = 1, QPointF position = QPointF(-1, -1));
     void addObstacle(QPointF position);
 };
 

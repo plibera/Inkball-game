@@ -2,6 +2,9 @@
 #define CONSTANTS_H
 
 #include <QColor>
+#include <QtMath>
+
+#define EPSILON 0.0001
 
 #define SCENE_W 800
 #define SCENE_H 800
