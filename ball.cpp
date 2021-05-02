@@ -41,6 +41,7 @@ void Ball::advance(int step)
 {
     if (!step)
         return;
+    cout<<angle<<endl;
 
     qreal dist = speed/FPS;
     QPointF futurePos(x()+dist*stepX, y()+dist*stepY);

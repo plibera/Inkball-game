@@ -5,25 +5,32 @@ using namespace std;
 
 InkBallScene::InkBallScene()
     :startedSegment(nullptr)
+{}
+
+void InkBallScene::loadLevel(Level &level)
 {
-    sourcePosition = QPointF(SCENE_W/2, SCENE_H/2);
+    qreal gridCellW = (qreal)SCENE_W/(qreal)(level.gridW+2);
+    qreal gridCellH = (qreal)SCENE_H/(qreal)(level.gridH+2);
+    sourcePosition.setX(gridCellW*(level.source.first+0.5));
+    sourcePosition.setY(gridCellH*(level.source.second+0.5));
 
-    addBall(QColor(255, 0, 0), M_PI/2, 300);
-    addBall(QColor(0, 0, 255), 0, 50, QPointF(100, 100));
-    addBall(QColor(0, 255, 255), 0, 200, QPointF(600, 100));
+    for(BallInfo &ball : level.balls)
+    {
+        addBall(ball.color, ball.angle, SPEED, QPointF((ball.x+0.5)*gridCellW, (ball.y+0.5)*gridCellH));
+    }
 
-
-    for(int i = 0; i < GRID_W; ++i)
-        addObstacle(QPointF(OBS_W/2 + i*OBS_W, OBS_H/2));
-    for(int i = 0; i < GRID_W; ++i)
-        addObstacle(QPointF(OBS_W/2 + i*OBS_W, SCENE_H - OBS_H/2));
-    for(int i = 1; i < GRID_H-1; ++i)
-        addObstacle(QPointF(OBS_W/2, OBS_H/2 + i*OBS_H));
-    for(int i = 1; i < GRID_H-1; ++i)
-        addObstacle(QPointF(SCENE_W - OBS_W/2, OBS_H/2 + i*OBS_H));
-    addObstacle(QPointF(400, 100));
-
-    //addSegment(QLineF(QPointF(0, 0), QPointF(500, 500)));
+    for(int i = 0; i < level.gridW+2; ++i)
+        addObstacle(QPointF(gridCellW/2 + (qreal)i*gridCellW, gridCellH/2));
+    for(int i = 0; i < level.gridW+2; ++i)
+        addObstacle(QPointF(gridCellW/2 + (qreal)i*gridCellW, SCENE_H - gridCellH/2));
+    for(int i = 1; i < level.gridH+1; ++i)
+        addObstacle(QPointF(gridCellW/2, gridCellH/2 + (qreal)i*gridCellH));
+    for(int i = 1; i < level.gridH+1; ++i)
+        addObstacle(QPointF(SCENE_W - gridCellW/2, gridCellH/2 + (qreal)i*gridCellH));
+    for(auto &obstacle : level.obstacles)
+    {
+        addObstacle(QPointF((obstacle.first+0.5)*gridCellW, (obstacle.second+0.5)*gridCellH));
+    }
 }
 
 void InkBallScene::addBall(QColor color, qreal direction, qreal speed, QPointF position)

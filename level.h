@@ -1,4 +1,4 @@
-/*#ifndef LEVEL_H
+#ifndef LEVEL_H
 #define LEVEL_H
 
 #include <iostream>
@@ -6,23 +6,37 @@
 
 #include <QGraphicsItem>
 
-class Goal : public QGraphicsItem
+#include "constants.h"
+
+struct BallInfo
 {
-    int x = 0;
-    int y = 0;
-    int id = 0;
+    qreal x;
+    qreal y;
+    qreal angle;
+    qreal deployDelay;
+    QColor color;
 };
 
-
-class Level
+struct GoalInfo
 {
-    std::vector<bool> isCellFree;
-    std::vector<Goal> goals;
+    int x;
+    int y;
+    QColor color;
+};
+
+struct Level
+{
+    int gridW;
+    int gridH;
+    std::vector<std::pair<int, int>> obstacles;
     std::pair<int, int> source;
-    std::vector<Ball> balls;
-public:
-    Level();
+    std::vector<GoalInfo> goals;
+    std::vector<BallInfo> balls;
+
+    Level(std::string levelInfo);
+    Level(int w = GRID_W, int h = GRID_H);
+    std::string toString();
+    void fromString(std::string levelInfo);
 };
 
 #endif // LEVEL_H
-*/

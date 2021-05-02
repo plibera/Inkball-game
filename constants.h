@@ -15,6 +15,7 @@
 #define GRID_H 20
 
 #define FPS 60
+#define SPEED 300
 
 const qreal OBS_W = SCENE_W/GRID_W;
 const qreal OBS_H = SCENE_H/GRID_H;
