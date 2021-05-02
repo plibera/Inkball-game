@@ -6,14 +6,15 @@
 #include <QtMath>
 
 
-Obstacle::Obstacle()
+Obstacle::Obstacle(qreal width, qreal height)
+    :w(width), h(height)
 {
 
 }
 
 QRectF Obstacle::boundingRect() const
 {
-    return QRectF(-OBS_W/2, -OBS_H/2, OBS_W, OBS_H);
+    return QRectF(-w/2, -h/2, w, h);
 }
 
 
@@ -29,5 +30,5 @@ void Obstacle::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidge
     painter->setBrush(obstacleOutlineColor);
     painter->drawRect(boundingRect());
     painter->setBrush(obstacleColor);
-    painter->drawRect(QRectF(-OBS_W*0.4, -OBS_H*0.4, 0.8*OBS_W, 0.8*OBS_H));
+    painter->drawRect(QRectF(-w*0.4, -h*0.4, 0.8*w, 0.8*h));
 }

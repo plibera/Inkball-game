@@ -9,10 +9,15 @@ InkBallScene::InkBallScene()
 
 void InkBallScene::loadLevel(Level &level)
 {
-    qreal gridCellW = (qreal)SCENE_W/(qreal)(level.gridW+2);
-    qreal gridCellH = (qreal)SCENE_H/(qreal)(level.gridH+2);
+    gridCellW = (qreal)SCENE_W/(qreal)(level.gridW+2);
+    gridCellH = (qreal)SCENE_H/(qreal)(level.gridH+2);
     sourcePosition.setX(gridCellW*(level.source.first+0.5));
     sourcePosition.setY(gridCellH*(level.source.second+0.5));
+
+    for(auto &goal : level.goals)
+    {
+        addGoal(QPointF((goal.x+0.5)*gridCellW, (goal.y+0.5)*gridCellH), goal.color);
+    }
 
     for(BallInfo &ball : level.balls)
     {
@@ -45,7 +50,7 @@ void InkBallScene::addBall(QColor color, qreal direction, qreal speed, QPointF p
 
 void InkBallScene::addObstacle(QPointF position)
 {
-    Obstacle *obstacle = new Obstacle;
+    Obstacle *obstacle = new Obstacle(gridCellW, gridCellH);
     obstacle->setPos(position);
     addItem(obstacle);
     obstacles.append(obstacle);
@@ -58,6 +63,15 @@ Segment* InkBallScene::addSegment(QLineF line)
     segments.append(segment);
     return segment;
 }
+
+void InkBallScene::addGoal(QPointF position, QColor color)
+{
+    Goal* goal = new Goal(gridCellW, gridCellH, color);
+    goal->setPos(position);
+    addItem(goal);
+    goals.append(goal);
+}
+
 
 
 void InkBallScene::mousePressEvent(QGraphicsSceneMouseEvent *event)

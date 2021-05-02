@@ -3,6 +3,7 @@ QT += widgets
 HEADERS += \
     ball.h \
     constants.h \
+    goal.h \
     inkballscene.h \
     inkballview.h \
     level.h \
@@ -11,6 +12,7 @@ HEADERS += \
 
 SOURCES += \
     ball.cpp \
+    goal.cpp \
     inkballscene.cpp \
     inkballview.cpp \
     level.cpp \

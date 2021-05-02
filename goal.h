@@ -1,16 +1,16 @@
-#ifndef OBSTACLE_H
-#define OBSTACLE_H
+#ifndef GOAL_H
+#define GOAL_H
 
 #include <QGraphicsItem>
 
-#include "constants.h"
-
-class Obstacle : public QGraphicsItem
+class Goal : public QGraphicsItem
 {
     qreal w;
     qreal h;
+    QColor color;
+
 public:
-    Obstacle(qreal width, qreal height);
+    Goal(qreal width, qreal height, QColor color);
 
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
@@ -18,4 +18,4 @@ public:
                    QWidget *widget) override;
 };
 
-#endif // OBSTACLE_H
+#endif // GOAL_H

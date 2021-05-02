@@ -41,7 +41,6 @@ void Ball::advance(int step)
 {
     if (!step)
         return;
-    cout<<angle<<endl;
 
     qreal dist = speed/FPS;
     QPointF futurePos(x()+dist*stepX, y()+dist*stepY);
@@ -106,6 +105,17 @@ void Ball::advance(int step)
         }
     }
     setPos(QPointF(x() + dist*stepX, y() + dist*stepY));
+    for(Goal* goal : inkBallScene->goals)
+    {
+        QLineF testLine(goal->pos(), pos());
+        if(testLine.length() < BALL_D)
+        {
+            inkBallScene->removeItem(this);
+            inkBallScene->balls.removeOne(this);
+            inkBallScene->update();
+            delete this;
+        }
+    }
 }
 
 void Ball::setAngle(qreal angle)
