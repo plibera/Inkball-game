@@ -19,20 +19,17 @@ public:
     QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                    QWidget *widget) override;
+    void setAngle(qreal angle);
 
-    bool doesCollide(Obstacle* obstacle, qreal &dist, qreal &bAngle);
-    bool doesCollide(QLineF segment, qreal &dist, qreal &bAngle);
-    bool doesCollide(QPointF point, qreal &dist, qreal &bAngle);
-    bool intersectsSegment(QLineF segment, qreal &dist, qreal &bAngle);
 
 protected:
     void advance(int step) override;
 
-    void moveBy(qreal dist);
-
     qreal angle = 0;
     qreal speed = 0;
     QColor color;
+    int stepX;
+    int stepY;
 };
 
 #endif // BALL_H

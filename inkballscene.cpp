@@ -5,6 +5,9 @@ InkBallScene::InkBallScene()
     sourcePosition = QPointF(SCENE_W/2, SCENE_H/2);
 
     addBall(QColor(255, 0, 0), M_PI/2, 8);
+    addBall(QColor(0, 0, 255), 0, 3, QPointF(100, 100));
+    addBall(QColor(0, 255, 255), 0, 6, QPointF(600, 100));
+
 
     for(int i = 0; i < GRID_W; ++i)
         addObstacle(QPointF(OBS_W/2 + i*OBS_W, OBS_H/2));
