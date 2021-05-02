@@ -13,7 +13,7 @@ class Ball : public QGraphicsItem
 {
     InkBallScene* inkBallScene;
 public:
-    Ball(InkBallScene* scene, QColor color, qreal direction, qreal speed = 1);
+    Ball(InkBallScene* scene, QColor color, qreal direction, qreal speed = 100);
 
     QRectF boundingRect() const override;
     QPainterPath shape() const override;

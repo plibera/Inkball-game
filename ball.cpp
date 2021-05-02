@@ -42,7 +42,8 @@ void Ball::advance(int step)
     if (!step)
         return;
 
-    QPointF futurePos(x()+speed*stepX, y()+speed*stepY);
+    qreal dist = speed/FPS;
+    QPointF futurePos(x()+dist*stepX, y()+dist*stepY);
     for(Obstacle* obstacle : inkBallScene->obstacles)
     {
         QPointF tl = obstacle->mapToScene(obstacle->boundingRect().topLeft());
@@ -59,7 +60,51 @@ void Ball::advance(int step)
             break;
         }
     }
-    setPos(QPointF(x() + speed*stepX, y() + speed*stepY));
+    futurePos.setX(x()+dist*stepX);
+    futurePos.setY(y()+dist*stepY);
+    for(Segment* segment : inkBallScene->segments)
+    {
+        if(segment->getColor() != segmentColor)
+            continue;
+        int direction = int(round(segment->getSegment().angle()/45))%4;
+        if(direction%2 == 0)
+        {
+            QLineF testLine(QPointF(futurePos.x(), futurePos.y()-BALL_D/2), QPointF(futurePos.x(), futurePos.y()+BALL_D/2));
+            QLineF testLine2(QPointF(futurePos.x()-BALL_D/2, futurePos.y()), QPointF(futurePos.x()+BALL_D/2, futurePos.y()));
+            QLineF::IntersectionType type = testLine.intersects(segment->getSegment(), nullptr);
+            QLineF::IntersectionType type2 = testLine2.intersects(segment->getSegment(), nullptr);
+            if(type == QLineF::BoundedIntersection || type2 == QLineF::BoundedIntersection)
+            {
+                setAngle(angle+M_PI);
+                inkBallScene->removeItem(segment);
+                inkBallScene->segments.removeOne(segment);
+                delete segment;
+                inkBallScene->update();
+                break;
+            }
+        }
+        else
+        {
+            qreal offset = BALL_D/(2*sqrt(2));
+            QLineF testLine(QPointF(futurePos.x()-offset, futurePos.y()-offset), QPointF(futurePos.x()+offset, futurePos.y()+offset));
+            QLineF testLine2(QPointF(futurePos.x()-offset, futurePos.y()+offset), QPointF(futurePos.x()+offset, futurePos.y()-offset));
+            QLineF::IntersectionType type = testLine.intersects(segment->getSegment(), nullptr);
+            QLineF::IntersectionType type2 = testLine2.intersects(segment->getSegment(), nullptr);
+            if(type == QLineF::BoundedIntersection || type2 == QLineF::BoundedIntersection)
+            {
+                if((direction == 1 && stepY == 0) || (direction == 3 && stepX == 0))
+                    setAngle(angle-M_PI/2);
+                else
+                    setAngle(angle+M_PI/2);
+                inkBallScene->removeItem(segment);
+                inkBallScene->segments.removeOne(segment);
+                delete segment;
+                inkBallScene->update();
+                break;
+            }
+        }
+    }
+    setPos(QPointF(x() + dist*stepX, y() + dist*stepY));
 }
 
 void Ball::setAngle(qreal angle)

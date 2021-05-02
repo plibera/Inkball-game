@@ -14,11 +14,15 @@
 #define GRID_W 20
 #define GRID_H 20
 
+#define FPS 60
+
 const qreal OBS_W = SCENE_W/GRID_W;
 const qreal OBS_H = SCENE_H/GRID_H;
 
 const QColor backgroundColor(200, 200, 200);
 const QColor obstacleColor(50, 50, 50);
 const QColor obstacleOutlineColor(0, 0, 0);
+const QColor segmentShadowColor(150, 150, 150);
+const QColor segmentColor(70, 70, 70);
 
 #endif // CONSTANTS_H
