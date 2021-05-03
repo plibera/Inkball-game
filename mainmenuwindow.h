@@ -38,6 +38,7 @@ class MainMenuWindow : public QMainWindow
     QHBoxLayout *speedAdjustLayout;
     QSlider *speedAdjustSlider;
     QLabel *speedAdjustLabel;
+    QLabel *mainInfoLabel;
 
 
 
@@ -50,8 +51,10 @@ public:
     void playLevel();
     void displayMessage(std::string msg);
     void changeSpeed(int speed);
+    void finishedGameOver(int windowId, int levelId);
+    void finishedGameWon(int windowId, int levelId, int gameTime);
+    void closeGame(int windowId);
 
-signals:
 
 };
 

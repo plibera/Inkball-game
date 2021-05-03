@@ -10,6 +10,11 @@ Goal::Goal(qreal width, qreal height, QColor color)
     :w(width), h(height), color(color)
 {}
 
+QColor Goal::getColor()
+{
+    return color;
+}
+
 
 QRectF Goal::boundingRect() const
 {

@@ -4,6 +4,8 @@ using namespace std;
 
 MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), ballSpeed(SPEED), idCounter(0)
 {
+    resize(MAIN_MENU_DEFAULT_W, MAIN_MENU_DEFAULT_H);
+
     if(loadLevels())
     {
         levelMapView = new LevelMapView(*activeLevel);
@@ -44,6 +46,11 @@ MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), ballSpeed
     speedAdjustLayout->addWidget(speedAdjustSlider);
     QObject::connect(speedAdjustSlider, &QSlider::valueChanged, this, &MainMenuWindow::changeSpeed);
 
+    mainInfoLabel = new QLabel;
+    mainInfoLabel->setAlignment(Qt::AlignCenter);
+    displayMessage("Level 1");
+
+    topLayout->addWidget(mainInfoLabel);
     topLayout->addLayout(levelLayout);
     topLayout->addLayout(speedAdjustLayout);
     topLayout->addLayout(buttonLayout);
@@ -83,9 +90,12 @@ bool MainMenuWindow::loadLevels()
 
 void MainMenuWindow::playLevel()
 {
-    GameWindow *gameWindow = new GameWindow(*activeLevel, idCounter, ballSpeed);
+    GameWindow *gameWindow = new GameWindow(*activeLevel, idCounter, ballSpeed, this);
+    gameWindow->setAttribute( Qt::WA_DeleteOnClose );
     gameWindow->show();
     gameWindows.push_back(make_pair(idCounter, gameWindow));
+    connect(gameWindow, &GameWindow::windowGameOver, this, &MainMenuWindow::finishedGameOver);
+    connect(gameWindow, &GameWindow::windowGameWon, this, &MainMenuWindow::finishedGameWon);
     idCounter++;
 }
 
@@ -111,15 +121,40 @@ void MainMenuWindow::showLevel()
 {
     levelMapView->setLevel(*activeLevel);
     levelMapView->scene()->invalidate(levelMapView->scene()->sceneRect());
+    displayMessage("Level " + to_string(distance(levels.begin(), activeLevel)+1));
 }
 
 void MainMenuWindow::displayMessage(std::string msg)
 {
-
+    mainInfoLabel->setText(QString::fromStdString(msg));
 }
 
 void MainMenuWindow::changeSpeed(int speed)
 {
     ballSpeed = speed;
     speedAdjustLabel->setText("Ball speed: "+QString::number(speed));
+}
+
+void MainMenuWindow::finishedGameOver(int windowId, int levelId)
+{
+    displayMessage("Level "+to_string(levelId)+": GAME OVER");
+    closeGame(windowId);
+}
+
+void MainMenuWindow::finishedGameWon(int windowId, int levelId, int gameTime)
+{
+    displayMessage("Level "+to_string(levelId)+" won in "+to_string(gameTime)+" seconds!");
+    closeGame(windowId);
+}
+
+void MainMenuWindow::closeGame(int windowId)
+{
+    for(auto &window : gameWindows)
+    {
+        if(window.first == windowId)
+        {
+            window.second->close();
+            break;
+        }
+    }
 }

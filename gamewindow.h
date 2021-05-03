@@ -11,12 +11,19 @@ class GameWindow : public QMainWindow
     InkBallScene* inkBallScene;
     InkBallView* view;
     int id;
+    int levelId;
 
 public:
     explicit GameWindow(Level &level, int id, int speed, QWidget *parent = nullptr);
     ~GameWindow();
 
+public slots:
+    void gameOver();
+    void gameWon(int gameTime);
+
 signals:
+    void windowGameOver(int id, int levelId);
+    void windowGameWon(int id, int levelId, int gameTime);
 
 };
 

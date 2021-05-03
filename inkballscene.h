@@ -3,6 +3,8 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QTime>
+#include <QElapsedTimer>
 
 #include "ball.h"
 #include "obstacle.h"
@@ -15,11 +17,14 @@ class Ball;
 
 class InkBallScene : public QGraphicsScene
 {
+    Q_OBJECT
+
     QPointF sourcePosition;
     Segment* startedSegment;
     qreal gridCellW;
     qreal gridCellH;
     int ballSpeed;
+    QElapsedTimer gameTimer;
 
 public:
     QList <Ball*> balls;
@@ -36,6 +41,11 @@ public:
 
     void loadLevel(Level &level);
     void setSpeed(int speed);
+    int getGameTime();
+
+signals:
+    void gameOver();
+    void gameWon(int seconds);
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

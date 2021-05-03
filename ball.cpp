@@ -110,6 +110,16 @@ void Ball::advance(int step)
         QLineF testLine(goal->pos(), pos());
         if(testLine.length() < BALL_D)
         {
+            if(goal->getColor() != color)
+            {
+                emit inkBallScene->gameOver();
+                return;
+            }
+            else if(inkBallScene->balls.size() == 1)
+            {
+                emit inkBallScene->gameWon(inkBallScene->getGameTime()/1000);
+                return;
+            }
             inkBallScene->removeItem(this);
             inkBallScene->balls.removeOne(this);
             inkBallScene->update();

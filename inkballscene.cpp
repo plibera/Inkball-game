@@ -36,6 +36,7 @@ void InkBallScene::loadLevel(Level &level)
     {
         addObstacle(QPointF((obstacle.first+1.5)*gridCellW, (obstacle.second+1.5)*gridCellH));
     }
+    gameTimer.start();
 }
 
 void InkBallScene::setSpeed(int speed)
@@ -110,4 +111,9 @@ void InkBallScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     startedSegment->setColor(segmentColor);
     update();
     startedSegment = nullptr;
+}
+
+int InkBallScene::getGameTime()
+{
+    return gameTimer.elapsed();
 }

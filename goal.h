@@ -11,6 +11,7 @@ class Goal : public QGraphicsItem
 
 public:
     Goal(qreal width, qreal height, QColor color);
+    QColor getColor();
 
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
