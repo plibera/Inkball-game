@@ -19,6 +19,7 @@ class InkBallScene : public QGraphicsScene
     Segment* startedSegment;
     qreal gridCellW;
     qreal gridCellH;
+    int ballSpeed;
 
 public:
     QList <Ball*> balls;
@@ -26,14 +27,15 @@ public:
     QList <Segment*> segments;
     QList <Goal*> goals;
 
-    InkBallScene();
+    InkBallScene(int ballSpeed = SPEED);
 
-    void addBall(QColor color, qreal direction = 0, qreal speed = 100, QPointF position = QPointF(-1, -1));
+    void addBall(QColor color, qreal direction, qreal speed, QPointF position = QPointF(-1, -1));
     void addObstacle(QPointF position);
     Segment* addSegment(QLineF line);
     void addGoal(QPointF position, QColor color);
 
     void loadLevel(Level &level);
+    void setSpeed(int speed);
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

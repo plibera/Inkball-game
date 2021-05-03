@@ -1,8 +1,8 @@
 #include "gamewindow.h"
 
-GameWindow::GameWindow(Level &level, int id, QWidget *parent) : QMainWindow(parent), id(id)
+GameWindow::GameWindow(Level &level, int id, int speed, QWidget *parent) : QMainWindow(parent), id(id)
 {
-    inkBallScene = new InkBallScene;
+    inkBallScene = new InkBallScene(speed);
     inkBallScene->loadLevel(level);
     view = new InkBallView(inkBallScene);
     setCentralWidget(view);

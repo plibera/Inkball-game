@@ -3,8 +3,8 @@
 
 using namespace std;
 
-InkBallScene::InkBallScene()
-    :startedSegment(nullptr)
+InkBallScene::InkBallScene(int ballSpeed)
+    :startedSegment(nullptr), ballSpeed(ballSpeed)
 {}
 
 void InkBallScene::loadLevel(Level &level)
@@ -21,7 +21,7 @@ void InkBallScene::loadLevel(Level &level)
 
     for(BallInfo &ball : level.balls)
     {
-        addBall(ball.color, ball.angle, SPEED, QPointF((ball.x+1.5)*gridCellW, (ball.y+1.5)*gridCellH));
+        addBall(ball.color, ball.angle, ballSpeed, QPointF((ball.x+1.5)*gridCellW, (ball.y+1.5)*gridCellH));
     }
 
     for(int i = 0; i < level.gridW+2; ++i)
@@ -36,6 +36,11 @@ void InkBallScene::loadLevel(Level &level)
     {
         addObstacle(QPointF((obstacle.first+1.5)*gridCellW, (obstacle.second+1.5)*gridCellH));
     }
+}
+
+void InkBallScene::setSpeed(int speed)
+{
+    ballSpeed = speed;
 }
 
 void InkBallScene::addBall(QColor color, qreal direction, qreal speed, QPointF position)
@@ -85,7 +90,6 @@ void InkBallScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if(!startedSegment)
         return;
-    QRectF oldRect = startedSegment->boundingRect();
 
     QLineF line(startedSegment->getSegment().p1(), event->scenePos());
     qreal angle = line.angle();
@@ -101,7 +105,7 @@ void InkBallScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void InkBallScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(!startedSegment)
+    if(!startedSegment || event->button() != Qt::LeftButton)
         return;
     startedSegment->setColor(segmentColor);
     update();

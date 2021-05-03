@@ -13,7 +13,7 @@ class GameWindow : public QMainWindow
     int id;
 
 public:
-    explicit GameWindow(Level &level, int id, QWidget *parent = nullptr);
+    explicit GameWindow(Level &level, int id, int speed, QWidget *parent = nullptr);
     ~GameWindow();
 
 signals:

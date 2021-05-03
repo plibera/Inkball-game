@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <QPushButton>
 #include <QLayout>
+#include <QSlider>
+#include <QLabel>
 
 #include "level.h"
 #include "inkballview.h"
@@ -20,6 +22,7 @@ class MainMenuWindow : public QMainWindow
     std::vector<Level> levels;
     std::vector<Level>::iterator activeLevel;
     std::vector<std::pair<int, GameWindow*>> gameWindows;
+    int ballSpeed;
     int idCounter;
 
     bool loadLevels();
@@ -32,6 +35,10 @@ class MainMenuWindow : public QMainWindow
     QHBoxLayout *buttonLayout;
     LevelMapView *levelMapView;
     QHBoxLayout *levelLayout;
+    QHBoxLayout *speedAdjustLayout;
+    QSlider *speedAdjustSlider;
+    QLabel *speedAdjustLabel;
+
 
 
 public:
@@ -42,6 +49,7 @@ public:
     void showLevel();
     void playLevel();
     void displayMessage(std::string msg);
+    void changeSpeed(int speed);
 
 signals:
 

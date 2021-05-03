@@ -2,7 +2,7 @@
 
 using namespace std;
 
-MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), idCounter(0)
+MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), ballSpeed(SPEED), idCounter(0)
 {
     if(loadLevels())
     {
@@ -32,7 +32,20 @@ MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), idCounter
     if(levelMapView)
         levelLayout->addWidget(levelMapView);
 
+    speedAdjustLayout = new QHBoxLayout;
+    speedAdjustSlider = new QSlider;
+    speedAdjustSlider->setOrientation(Qt::Horizontal);
+    speedAdjustSlider->setMinimum(100);
+    speedAdjustSlider->setMaximum(500);
+    speedAdjustSlider->setValue(SPEED);
+    speedAdjustLabel = new QLabel;
+    changeSpeed(SPEED);
+    speedAdjustLayout->addWidget(speedAdjustLabel);
+    speedAdjustLayout->addWidget(speedAdjustSlider);
+    QObject::connect(speedAdjustSlider, &QSlider::valueChanged, this, &MainMenuWindow::changeSpeed);
+
     topLayout->addLayout(levelLayout);
+    topLayout->addLayout(speedAdjustLayout);
     topLayout->addLayout(buttonLayout);
 }
 
@@ -70,7 +83,7 @@ bool MainMenuWindow::loadLevels()
 
 void MainMenuWindow::playLevel()
 {
-    GameWindow *gameWindow = new GameWindow(*activeLevel, idCounter);
+    GameWindow *gameWindow = new GameWindow(*activeLevel, idCounter, ballSpeed);
     gameWindow->show();
     gameWindows.push_back(make_pair(idCounter, gameWindow));
     idCounter++;
@@ -100,7 +113,13 @@ void MainMenuWindow::showLevel()
     levelMapView->scene()->invalidate(levelMapView->scene()->sceneRect());
 }
 
-void displayMessage(std::string msg)
+void MainMenuWindow::displayMessage(std::string msg)
 {
 
+}
+
+void MainMenuWindow::changeSpeed(int speed)
+{
+    ballSpeed = speed;
+    speedAdjustLabel->setText("Ball speed: "+QString::number(speed));
 }
