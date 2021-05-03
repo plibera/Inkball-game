@@ -26,7 +26,7 @@ std::string Level::toString()
     stringstream ss;
     ss<<gridW<<" "<<gridH<<" ";
     vector<bool> containsObstacle;
-    containsObstacle.insert(containsObstacle.begin(), false, gridW*gridH);
+    containsObstacle.insert(containsObstacle.begin(), gridW*gridH, false);
     for(auto obs : obstacles)
     {
         containsObstacle[obs.second*gridW + obs.first] = true;

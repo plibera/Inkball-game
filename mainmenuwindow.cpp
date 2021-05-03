@@ -9,6 +9,12 @@ MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), ballSpeed
     if(loadLevels())
     {
         levelMapView = new LevelMapView(*activeLevel);
+        qDebug()<<"Levels read"<<Qt::endl;
+    }
+    else
+    {
+        qDebug()<<"Levels not read"<<Qt::endl;
+        return;
     }
 
     mainWidget = new QWidget;
@@ -82,7 +88,8 @@ MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), ballSpeed
 bool MainMenuWindow::loadLevels()
 {
     QString data;
-    QString fileName(":/levels.txt");
+    //QString fileName(":/levels.txt");
+    QString fileName("levels.txt");
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly)) {
         qDebug()<<"File not opened"<<Qt::endl;
@@ -172,6 +179,7 @@ void MainMenuWindow::finishedGameWon(int windowId, int levelId, int gameTime)
         if(level.levelId == levelId)
             level.addScore(gameTime);
     }
+    saveScoresToFile();
     closeGame(windowId);
 }
 
@@ -200,4 +208,26 @@ void MainMenuWindow::updateScoreBoard()
         if(counter == scoreTableWidget->rowCount())
             break;
     }
+}
+
+
+bool MainMenuWindow::saveScoresToFile()
+{
+    QString fileName("levels.txt");
+    QFile file(fileName);
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug()<<"File not opened"<<Qt::endl;
+        return false;
+    }
+    else
+    {
+        qDebug()<<"File opened"<<Qt::endl;
+    }
+    QTextStream out(&file);
+    for(auto &level : levels)
+    {
+        out << QString::fromStdString(level.toString()) << "\n";
+    }
+    file.close();
+    return true;
 }

@@ -21,7 +21,10 @@ void InkBallScene::loadLevel(Level &level)
 
     for(BallInfo &ball : level.balls)
     {
-        addBall(ball.color, ball.angle, ballSpeed, QPointF((ball.x+1.5)*gridCellW, (ball.y+1.5)*gridCellH));
+        if(ball.deployDelay < EPSILON)
+            addBall(ball.color, ball.angle, ballSpeed, QPointF((ball.x+1.5)*gridCellW, (ball.y+1.5)*gridCellH));
+        else
+            waitingBalls.push_back(ball);
     }
 
     for(int i = 0; i < level.gridW+2; ++i)
@@ -113,7 +116,32 @@ void InkBallScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     startedSegment = nullptr;
 }
 
+void InkBallScene::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    painter->setBrush(Qt::black);
+    painter->drawEllipse(sourcePosition, BALL_D/4, BALL_D/4);
+}
+
 int InkBallScene::getGameTime()
 {
     return gameTimer.elapsed();
+}
+
+void InkBallScene::checkBallRelease()
+{
+    if(waitingBalls.size() == 0)
+        return;
+    vector<BallInfo> notReleased;
+    for(auto& ball : waitingBalls)
+    {
+        if(ball.deployDelay < gameTimer.elapsed()/1000)
+        {
+            addBall(ball.color, ball.angle, ballSpeed);
+        }
+        else
+        {
+            notReleased.push_back(ball);
+        }
+    }
+    waitingBalls = notReleased;
 }

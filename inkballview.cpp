@@ -9,6 +9,7 @@ InkBallView::InkBallView(InkBallScene* inkBallScene)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy((Qt::ScrollBarAlwaysOff));
 
-    QObject::connect(&timer, &QTimer::timeout, inkBallScene, &QGraphicsScene::advance);
+    connect(&timer, &QTimer::timeout, inkBallScene, &QGraphicsScene::advance);
+    connect(&timer, &QTimer::timeout, inkBallScene, &InkBallScene::checkBallRelease);
     timer.start(1000/FPS);
 }

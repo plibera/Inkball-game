@@ -5,6 +5,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QTime>
 #include <QElapsedTimer>
+#include <QPainter>
 
 #include "ball.h"
 #include "obstacle.h"
@@ -27,6 +28,7 @@ class InkBallScene : public QGraphicsScene
     QElapsedTimer gameTimer;
 
 public:
+    std::vector<BallInfo> waitingBalls;
     QList <Ball*> balls;
     QList <Obstacle*> obstacles;
     QList <Segment*> segments;
@@ -42,6 +44,7 @@ public:
     void loadLevel(Level &level);
     void setSpeed(int speed);
     int getGameTime();
+    void checkBallRelease();
 
 signals:
     void gameOver();
@@ -51,6 +54,7 @@ protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void drawBackground(QPainter *painter, const QRectF &rect) override;
 };
 
 #endif // INKBALLSCENE_H

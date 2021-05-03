@@ -59,6 +59,7 @@ public:
     void finishedGameWon(int windowId, int levelId, int gameTime);
     void closeGame(int windowId);
     void updateScoreBoard();
+    bool saveScoresToFile();
 
 
 };

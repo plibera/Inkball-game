@@ -115,7 +115,7 @@ void Ball::advance(int step)
                 emit inkBallScene->gameOver();
                 return;
             }
-            else if(inkBallScene->balls.size() == 1)
+            else if(inkBallScene->balls.size() == 1 && inkBallScene->waitingBalls.size() == 0)
             {
                 emit inkBallScene->gameWon(inkBallScene->getGameTime()/1000);
                 return;
