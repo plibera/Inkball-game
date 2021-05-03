@@ -30,10 +30,6 @@ MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), ballSpeed
     topLayout = new QVBoxLayout;
     mainWidget->setLayout(topLayout);
 
-    levelLayout = new QHBoxLayout;
-    if(levelMapView)
-        levelLayout->addWidget(levelMapView);
-
     speedAdjustLayout = new QHBoxLayout;
     speedAdjustSlider = new QSlider;
     speedAdjustSlider->setOrientation(Qt::Horizontal);
@@ -50,10 +46,36 @@ MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), ballSpeed
     mainInfoLabel->setAlignment(Qt::AlignCenter);
     displayMessage("Level 1");
 
+
+    scoreTableWidget = new QTableWidget;
+    scoreTableWidget->setColumnCount(1);
+    scoreTableWidget->setRowCount(BEST_SCORES_DISPLAYED);
+    QStringList columnNames = {"Best Times [s]"};
+    scoreTableWidget->setHorizontalHeaderLabels(columnNames);
+    scoreTableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scoreTableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scoreTableWidget->horizontalHeader()->setStretchLastSection(true);
+
+    levelLayout = new QHBoxLayout;
+    if(levelMapView)
+    {
+        QSizePolicy spLeft(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        spLeft.setHorizontalStretch(3);
+        levelMapView->setSizePolicy(spLeft);
+        levelLayout->addWidget(levelMapView);
+    }
+    QSizePolicy spRight(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    spRight.setHorizontalStretch(1);
+    scoreTableWidget->setSizePolicy(spRight);
+    levelLayout->addWidget(scoreTableWidget);
+
+
     topLayout->addWidget(mainInfoLabel);
     topLayout->addLayout(levelLayout);
     topLayout->addLayout(speedAdjustLayout);
     topLayout->addLayout(buttonLayout);
+
+    updateScoreBoard();
 }
 
 
@@ -122,6 +144,7 @@ void MainMenuWindow::showLevel()
     levelMapView->setLevel(*activeLevel);
     levelMapView->scene()->invalidate(levelMapView->scene()->sceneRect());
     displayMessage("Level " + to_string(distance(levels.begin(), activeLevel)+1));
+    updateScoreBoard();
 }
 
 void MainMenuWindow::displayMessage(std::string msg)
@@ -144,6 +167,11 @@ void MainMenuWindow::finishedGameOver(int windowId, int levelId)
 void MainMenuWindow::finishedGameWon(int windowId, int levelId, int gameTime)
 {
     displayMessage("Level "+to_string(levelId)+" won in "+to_string(gameTime)+" seconds!");
+    for(auto &level : levels)
+    {
+        if(level.levelId == levelId)
+            level.addScore(gameTime);
+    }
     closeGame(windowId);
 }
 
@@ -156,5 +184,20 @@ void MainMenuWindow::closeGame(int windowId)
             window.second->close();
             break;
         }
+    }
+    updateScoreBoard();
+}
+
+
+void MainMenuWindow::updateScoreBoard()
+{
+    scoreTableWidget->clearContents();
+    int counter = 0;
+    for(auto& score : activeLevel->scores)
+    {
+        QTableWidgetItem *item = new QTableWidgetItem(QString::number(score));
+        scoreTableWidget->setItem(counter++, 0, item);
+        if(counter == scoreTableWidget->rowCount())
+            break;
     }
 }

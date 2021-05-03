@@ -29,6 +29,7 @@ struct Level
     int levelId;
     int gridW;
     int gridH;
+    std::vector<int> scores;
     std::vector<std::pair<int, int>> obstacles;
     std::pair<int, int> source;
     std::vector<GoalInfo> goals;
@@ -38,6 +39,7 @@ struct Level
     Level(int levelId, int w = GRID_W, int h = GRID_H);
     std::string toString();
     void fromString(std::string levelInfo);
+    void addScore(int score);
 };
 
 #endif // LEVEL_H

@@ -50,6 +50,11 @@ std::string Level::toString()
     {
         ss<<ball.x<<" "<<ball.y<<" "<<ball.angle<<" "<<ball.deployDelay<<" "<<ball.color.red()<<" "<<ball.color.green()<<" "<<ball.color.blue()<<" ";
     }
+    ss<<scores.size()<<" ";
+    for(auto &score : scores)
+    {
+        ss<<score<<" ";
+    }
     return ss.str();
 }
 
@@ -58,6 +63,7 @@ void Level::fromString(std::string levelInfo)
     obstacles.clear();
     goals.clear();
     balls.clear();
+    scores.clear();
 
     stringstream ss;
     ss.str(levelInfo);
@@ -93,4 +99,18 @@ void Level::fromString(std::string levelInfo)
         ball.color = QColor(r, g, b);
         balls.push_back(ball);
     }
+    ss>>n;
+    int score;
+    for(int i = 0; i < n; ++i)
+    {
+        ss>>score;
+        scores.push_back(score);
+    }
+    sort(scores.begin(), scores.end());
+}
+
+void Level::addScore(int score)
+{
+    scores.push_back(score);
+    sort(scores.begin(), scores.end());
 }

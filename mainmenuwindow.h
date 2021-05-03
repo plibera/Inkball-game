@@ -8,6 +8,9 @@
 #include <QLayout>
 #include <QSlider>
 #include <QLabel>
+#include <QTableWidget>
+#include <QTableView>
+#include <QHeaderView>
 
 #include "level.h"
 #include "inkballview.h"
@@ -39,6 +42,7 @@ class MainMenuWindow : public QMainWindow
     QSlider *speedAdjustSlider;
     QLabel *speedAdjustLabel;
     QLabel *mainInfoLabel;
+    QTableWidget *scoreTableWidget;
 
 
 
@@ -54,6 +58,7 @@ public:
     void finishedGameOver(int windowId, int levelId);
     void finishedGameWon(int windowId, int levelId, int gameTime);
     void closeGame(int windowId);
+    void updateScoreBoard();
 
 
 };

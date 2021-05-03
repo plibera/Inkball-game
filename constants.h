@@ -17,8 +17,9 @@
 #define FPS 60
 #define SPEED 300
 
-#define MAIN_MENU_DEFAULT_W 400
-#define MAIN_MENU_DEFAULT_H 400
+#define MAIN_MENU_DEFAULT_W 600
+#define MAIN_MENU_DEFAULT_H 520
+#define BEST_SCORES_DISPLAYED 10
 
 const qreal OBS_W = SCENE_W/GRID_W;
 const qreal OBS_H = SCENE_H/GRID_H;
