@@ -3,7 +3,8 @@
 
 using namespace std;
 
-Level::Level(std::string levelInfo)
+Level::Level(int levelId, std::string levelInfo)
+    :levelId(levelId)
 {
     if(!levelInfo.empty())
         fromString(levelInfo);
@@ -14,8 +15,8 @@ Level::Level(std::string levelInfo)
     }
 }
 
-Level::Level(int w, int h)
-    :gridW(w), gridH(h)
+Level::Level(int levelId, int w, int h)
+    :levelId(levelId), gridW(w), gridH(h)
 {
 
 }
