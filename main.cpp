@@ -28,7 +28,8 @@ int main(int argc, char **argv)
         data = file.readAll();
     }
     file.close();
-    level.fromString(data.toStdString());
+    QStringList lines = data.split('\n');
+    level.fromString(lines[2].toStdString());
 
     InkBallScene inkBallScene;
     inkBallScene.loadLevel(level);

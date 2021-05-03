@@ -11,17 +11,17 @@ void InkBallScene::loadLevel(Level &level)
 {
     gridCellW = (qreal)SCENE_W/(qreal)(level.gridW+2);
     gridCellH = (qreal)SCENE_H/(qreal)(level.gridH+2);
-    sourcePosition.setX(gridCellW*(level.source.first+0.5));
-    sourcePosition.setY(gridCellH*(level.source.second+0.5));
+    sourcePosition.setX(gridCellW*(level.source.first+1.5));
+    sourcePosition.setY(gridCellH*(level.source.second+1.5));
 
     for(auto &goal : level.goals)
     {
-        addGoal(QPointF((goal.x+0.5)*gridCellW, (goal.y+0.5)*gridCellH), goal.color);
+        addGoal(QPointF((goal.x+1.5)*gridCellW, (goal.y+1.5)*gridCellH), goal.color);
     }
 
     for(BallInfo &ball : level.balls)
     {
-        addBall(ball.color, ball.angle, SPEED, QPointF((ball.x+0.5)*gridCellW, (ball.y+0.5)*gridCellH));
+        addBall(ball.color, ball.angle, SPEED, QPointF((ball.x+1.5)*gridCellW, (ball.y+1.5)*gridCellH));
     }
 
     for(int i = 0; i < level.gridW+2; ++i)
@@ -34,7 +34,7 @@ void InkBallScene::loadLevel(Level &level)
         addObstacle(QPointF(SCENE_W - gridCellW/2, gridCellH/2 + (qreal)i*gridCellH));
     for(auto &obstacle : level.obstacles)
     {
-        addObstacle(QPointF((obstacle.first+0.5)*gridCellW, (obstacle.second+0.5)*gridCellH));
+        addObstacle(QPointF((obstacle.first+1.5)*gridCellW, (obstacle.second+1.5)*gridCellH));
     }
 }
 
