@@ -88,8 +88,8 @@ MainMenuWindow::MainMenuWindow(QWidget *parent) : QMainWindow(parent), ballSpeed
 bool MainMenuWindow::loadLevels()
 {
     QString data;
-    //QString fileName(":/levels.txt");
-    QString fileName("levels.txt");
+    QString fileName(":/levels.txt");
+    //QString fileName("levels.txt");
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly)) {
         qDebug()<<"File not opened"<<Qt::endl;
